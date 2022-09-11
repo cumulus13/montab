@@ -7,7 +7,6 @@ import signal
 import Xlib.display
 import Xlib.protocol
 import gi
-import re
 
 gi.require_version('Gdk', '3.0')
 gi.require_version('Gtk', '3.0')
@@ -90,9 +89,6 @@ class MonTab:
 
     def get_current_monitor(self):
         win = self.screen.get_active_window()
-        #print("dir(win):", dir(win))
-        #print("win:", win)
-        #print("type(win):", type(win))
         return self.screen.get_monitor_at_window(win)
 
     def activate_window(self, win):
@@ -221,8 +217,6 @@ class Listener:
         self.super = superkey
 
         nmons = self.montab.screen.get_n_monitors()
-        #print("nmons:", nmons)
-        #print("type(nmons):", type(nmons))
         self.monkeys = [chr(ord('1') + n) for n in range(nmons)]
 
         Keybinder.init()
@@ -262,13 +256,6 @@ class Listener:
             self.montab.raise_window(win)
         self.bind_tab(True)
 
-    def convert_title_sublime(self, title):
-        print("TITLE 0:", title)
-        title = re.sub(" - Sublime Text \(LICENSE UPGRADE REQUIRED\)", "", title)
-        print("TITLE 1:", title)
-        return title
-
-
     def show_switcher(self, reverse=False, monitor=None):
         windows = self.montab.get_windows(monitor=monitor)
         if len(windows) < 2:
@@ -286,8 +273,7 @@ class Listener:
             nextkey = self.monkeys[monitor]
             prevkey = self.monkeys[monitor].upper()
 
-        names = dict([(w, self.convert_title_sublime(self.montab.get_window_name(w).decode('utf-8'))) for w in windows])
-        print("NAMES:", names, type(names))
+        names = dict([(w, self.montab.get_window_name(w).decode('utf-8')) for w in windows])
         initial = -1 if reverse else 1
 
         switcher = Switcher(windows, names, initial=initial,

@@ -1,0 +1,12 @@
+.gitignore
+LICENSE
+MANIFEST.in
+README.rst
+setup.py
+montab/__init__.py
+montab/montab.py
+montab.egg-info/PKG-INFO
+montab.egg-info/SOURCES.txt
+montab.egg-info/dependency_links.txt
+montab.egg-info/entry_points.txt
+montab.egg-info/top_level.txt
